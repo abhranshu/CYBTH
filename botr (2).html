@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cybersecurity Awareness Chatbot</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #269c40;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .chatbot-container {
+            width: 1000px;
+            height: 900px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 15px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center; /* Align items in the center */
+            justify-content: center; /* Center horizontally */
+        }
+
+        .chat-header i {
+            font-size: 3rem; /* Increased icon size */
+            margin-right: 10px; /* Space between icon and text */
+        }
+
+        .chat-window {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            background-color: #f9f9f9;
+        }
+
+        .chat-message {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            max-width: 80%;
+        }
+
+        .bot-message {
+            background-color: #007bff;
+            color: white;
+            align-self: flex-start;
+        }
+
+        .user-message {
+            background-color: #e1e1e1;
+            color: black;
+            align-self: flex-end;
+        }
+
+        .chat-input-container {
+            display: flex;
+            padding: 10px;
+            background-color: #f1f1f1;
+            border-top: 1px solid #ddd;
+        }
+
+        #user-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        #send-button {
+            margin-left: 10px;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        #send-button:hover {
+            background-color: #0056b3;
+        }
+
+        .chat-window::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .chat-window::-webkit-scrollbar-thumb {
+            background-color: #007bff;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="chatbot-container">
+        <div class="chat-header">
+            <!-- Font Awesome robot icon with increased size -->
+            <i class="fas fa-robot"></i> 
+            <h1>Cybersecurity Awareness Chatbot</h1>
+        </div>
+        <div id="chat-window" class="chat-window">
+            <div class="chat-message bot-message">
+                👋 Hi! I'm your cybersecurity assistant. How can I help you stay safe online?
+            </div>
+        </div>
+        <div class="chat-input-container">
+            <input id="user-input" type="text" placeholder="Type your message..." />
+            <button id="send-button">Send</button>
+        </div>
+    </div>
+    <script>
+        const chatWindow = document.getElementById('chat-window');
+        const userInput = document.getElementById('user-input');
+        const sendButton = document.getElementById('send-button');
+
+        const greetings = [
+            { pattern: "hi", response: "👋 Hi! I'm your cybersecurity assistant. How can I help you stay safe online?" },
+            { pattern: "hello", response: "Hello! I'm here to help you learn about cybersecurity. What would you like to know?" },
+            { pattern: "hey", response: "Hey there! Ready to explore cybersecurity topics? Ask me anything!" },
+            { pattern: "greetings", response: "Greetings! I'm your cybersecurity guide. What would you like to learn about?" },
+            { pattern: "good morning", response: "Good morning! Ready to learn about cybersecurity?" },
+            { pattern: "good afternoon", response: "Good afternoon! How can I assist you with cybersecurity today?" },
+            { pattern: "good evening", response: "Good evening! Let's talk about cybersecurity. What's on your mind?" }
+        ];
+
+        const helpMessage = `🤖 Cybersecurity Bot Help Menu:
+
+1. Ask questions about:
+   - Password security
+   - Phishing
+   - Malware
+   - Data privacy
+   - Social engineering
+   - Network security
+   - Mobile security
+   - Cloud security
+
+2. Example questions:
+   - "What makes a strong password?"
+   - "How do I identify phishing emails?"
+   - "What is ransomware?"
+   - "How can I protect my privacy online?"
+
+Type 'help' for more options or ask about a topic!`;
+
+        const qaPairs = [
+            {
+                question: "What makes a strong password?",
+                answer: `A strong password should include:
+1. Minimum 12 characters length
+2. Mix of uppercase and lowercase letters
+3. Numbers and special characters
+4. No personal information
+5. Unique for each account
+6. Not based on dictionary words
+
+📌 Pro tip: Consider using a password manager to generate and store strong passwords securely.`,
+                keywords: ["strong", "password", "secure", "create"]
+            },
+            {
+                question: "How do password managers work?",
+                answer: `Password managers help you by:
+1. Generating strong, unique passwords
+2. Securely encrypting stored passwords
+3. Auto-filling credentials
+4. Alerting about weak/reused passwords
+5. Syncing across devices
+6. Offering secure password sharing
+
+🔐 Popular options include LastPass, 1Password, and Bitwarden.`,
+                keywords: ["password manager", "lastpass", "1password", "keeper"]
+            },
+            {
+                question: "How do I identify phishing emails?",
+                answer: `Key signs of phishing emails:
+1. Urgent or threatening language
+2. Generic greetings ("Dear Sir/Madam")
+3. Spelling and grammar errors
+4. Mismatched or fake sender addresses
+5. Suspicious attachments
+6. Requests for sensitive information
+7. Links to unofficial websites
+
+🚨 When in doubt, don't click! Contact the supposed sender through official channels.`,
+                keywords: ["phishing", "email", "scam", "identify", "signs"]
+            },
+            {
+                question: "What is ransomware?",
+                answer: `Ransomware is a type of malicious software that:
+1. Encrypts your files or locks your system.
+2. Demands a ransom payment to restore access.
+
+❗ Tips to protect yourself:
+- Keep backups of important files.
+- Avoid clicking on suspicious links.
+- Ensure your antivirus is up-to-date.`,
+                keywords: ["ransomware", "malware", "encrypt"]
+            },
+            {
+                question: "What is social engineering?",
+                answer: `Social engineering involves manipulating individuals into divulging confidential information by exploiting psychological factors.`,
+                keywords: ["social engineering", "manipulation", "psychological"]
+            },
+            {
+                question: "What is pretexting?",
+                answer: `Pretexting is a form of social engineering where attackers create a fabricated scenario to gain access to personal information.`,
+                keywords: ["pretexting", "social engineering", "scenario"]
+            },
+            {
+                question: "What is HTTPS?",
+                answer: `HTTPS is a secure version of HTTP, ensuring that communications between your browser and website are encrypted.`,
+                keywords: ["https", "secure", "http", "encrypted"]
+            },
+            {
+                question: "How can I protect my privacy online?",
+                answer: `To protect your privacy online:
+1. Use strong, unique passwords for each account.
+2. Enable two-factor authentication.
+3. Avoid oversharing personal details on social media.
+4. Use VPNs for secure browsing.
+5. Regularly review privacy settings on your accounts.`,
+                keywords: ["privacy", "online", "data protection"]
+            }
+        ];
+
+        function appendMessage(message, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('chat-message', isUser ? 'user-message' : 'bot-message');
+            messageDiv.textContent = message;
+            chatWindow.appendChild(messageDiv);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+
+        function matchGreeting(input) {
+            input = input.toLowerCase().trim();
+            for (const greet of greetings) {
+                if (input.includes(greet.pattern)) {
+                    return greet.response;
+                }
+            }
+            return null;
+        }
+
+        function getResponse(input) {
+            const greetingResponse = matchGreeting(input);
+            if (greetingResponse) {
+                return greetingResponse;
+            }
+
+            if (input.toLowerCase() === 'help' || input.toLowerCase() === 'menu') {
+                return helpMessage;
+            }
+
+            for (const pair of qaPairs) {
+                if (pair.keywords.some(keyword => input.toLowerCase().includes(keyword))) {
+                    return pair.answer;
+                }
+            }
+
+            return "I'm not sure about that specific query. Type 'help' for guidance or ask about a topic!";
+        }
+
+        sendButton.addEventListener('click', () => {
+            const input = userInput.value.trim();
+            if (!input) return;
+
+            appendMessage(input, true); // User message
+            const response = getResponse(input); // Bot response
+            appendMessage(response); // Display bot's response
+            userInput.value = ''; // Clear input field
+        });
+
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendButton.click();
+        });
+    </script>
+</body>
+</html>

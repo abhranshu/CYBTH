@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CYBER SECURITY - Slidebar</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* General Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-image: url('582301426869168784_Dual Circuit Board 4K Wallpaper.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      color: rgb(24, 216, 230);
+      overflow-x: hidden;
+      height: 100vh; /* Ensures body takes full viewport height */
+    }
+
+    h1 {
+      margin: 20px;
+      text-align: center;
+      font-size: 3rem;
+      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
+    }
+
+    /* Slider Container */
+    .slider {
+      position: relative;
+      width: 100%;
+      max-width: 1200px;
+      height: 100vh; /* Increased height to fit all content */
+      margin: 0 auto;
+      overflow: hidden;
+    }
+
+    .slides {
+      display: flex;
+      flex-direction: column; /* Stack slides vertically */
+      transition: transform 0.5s ease-in-out;
+      height: 100%;
+    }
+
+    .slide {
+      flex: 1; /* Make sure all slides take equal height */
+      box-sizing: border-box;
+      padding: 20px;
+    }
+
+    .card {
+      background: rgba(27, 44, 71, 0.9);
+      border: 1px solid #2f4a6e;
+      border-radius: 12px;
+      padding: 25px;
+      text-align: center;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      height: 100%;
+    }
+
+    .card h2 {
+      color: #00ff80;
+      margin-bottom: 15px;
+      font-size: 2rem;
+    }
+
+    .card p {
+      margin-bottom: 20px;
+      color: #d6d6d6;
+      font-size: 1rem;
+    }
+
+    .level-button {
+      background: transparent;
+      color: white;
+      border: 2px solid white;
+      border-radius: 8px;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.3s ease, transform 0.2s ease;
+      margin-top: 10px;
+    }
+
+    .level-button:hover {
+      background: rgba(0, 255, 128, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .level-button.disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* Navigation Buttons */
+    .nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 255, 128, 0.7);
+      border: none;
+      color: white;
+      font-size: 2rem;
+      padding: 10px 15px;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    .nav-btn.left {
+      left: 10px;
+    }
+
+    .nav-btn.right {
+      right: 10px;
+    }
+
+    .nav-btn:hover {
+      background: rgba(0, 255, 128, 1);
+    }
+  </style>
+</head>
+<body>
+  <h1>CYBER SECURITY</h1>
+
+  <!-- Slider Container -->
+  <div class="slider" id="slider">
+    <button class="nav-btn left" id="prevSlide">❮</button>
+    <div class="slides" id="slides">
+      <!-- Slide 1 -->
+      <div class="slide">
+        <div class="card">
+          <h2>VIDEOS</h2>
+          <a href="C:\Users\Ayush\Desktop\video.html">
+            <button class="level-button">INFORMATIVE VIDEOS</button>
+          </a>
+        </div>
+      </div>
+      <!-- Slide 2 -->
+      <div class="slide">
+        <div class="card">
+          <h2>AUDIOS</h2>
+          <a href="C:\Users\Ayush\Desktop\cyth\audio.html">
+            <button class="level-button">AUDIOS</button>
+          </a>
+        </div>
+      </div>
+      <!-- Slide 3 -->
+      <div class="slide">
+        <div class="card">
+          <h2>INDEPTH LEARNING</h2>
+          <a href="C:\Users\Ayush\Desktop\botr.html">
+            <button class="level-button">CHAT BOT</button>
+          </a>
+        </div>
+      </div>
+      <!-- Slide 4 -->
+      <div class="slide">
+        <div class="card">
+          <h2>QUIZ</h2>
+          <a href="C:\Users\Ayush\Desktop\cyth\easy2.html">
+            <button class="level-button">Level One</button>
+          </a>
+          <a href="C:\Users\Ayush\Desktop\cyth\medium2.html">
+            <button class="level-button disabled" id="quiz-level2">Level Two</button>
+          </a>
+          <a href="C:\Users\Ayush\Desktop\cyth\hard.html">
+            <button class="level-button disabled" id="quiz-level3">Level Three</button>
+          </a>
+        </div>
+      </div>
+    </div>
+    <button class="nav-btn right" id="nextSlide">❯</button>
+  </div>
+
+  <script>
+    const slides = document.getElementById('slides');
+    const prevSlide = document.getElementById('prevSlide');
+    const nextSlide = document.getElementById('nextSlide');
+    let currentSlide = 0;
+
+    // Navigate to the next slide
+    nextSlide.addEventListener('click', () => {
+      currentSlide = (currentSlide + 1) % 4; // Total slides = 4
+      updateSlidePosition();
+    });
+
+    // Navigate to the previous slide
+    prevSlide.addEventListener('click', () => {
+      currentSlide = (currentSlide - 1 + 4) % 4; // Total slides = 4
+      updateSlidePosition();
+    });
+
+    function updateSlidePosition() {
+      slides.style.transform = `translateY(-${currentSlide * 100}%)`; // Move vertically
+    }
+
+    // Enable or disable buttons (logic example)
+    const level1Complete = localStorage.getItem('level1Complete') === 'true';
+    if (level1Complete) {
+      document.getElementById('quiz-level2').classList.remove('disabled');
+      document.getElementById('quiz-level3').classList.remove('disabled');
+    }
+
+    const buttons = document.querySelectorAll('.level-button');
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        const url = button.getAttribute('data-url');
+        if (!button.classList.contains('disabled')) {
+          window.location.href = url;
+        }
+      });
+    });
+  </script>
+</body>
+</html>

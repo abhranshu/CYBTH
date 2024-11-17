@@ -1,0 +1,140 @@
+<div class="slide">
+    <div class="card">
+      <h2>AUDIOS</h2>
+      
+      <!-- Audio file 1 -->
+      <div class="audio-container">
+        <audio class="audio" controls>
+          <source src="SSL, TLS, HTTP, HTTPS Explained.mp3" type="audio/mp3">
+          <source src="path/to/audio-file1.ogg" type="audio/ogg">
+          Your browser does not support the audio element.
+        </audio>
+        <p class="audio-description">Audio 1: Password Security Awareness</p>
+      </div>
+      
+      <!-- Audio file 2 -->
+      <div class="audio-container">
+        <audio class="audio" controls>
+          <source src="Securing_Small_Businesses_with_Cybersecurity_Discover_the_Best_Practices.mp3" type="audio/mp3">
+          <source src="path/to/audio-file2.ogg" type="audio/ogg">
+          Your browser does not support the audio element.
+        </audio>
+        <p class="audio-description">Audio 2: Securing Small Businesses</p>
+      </div>
+      
+      <!-- Audio file 3 -->
+      <div class="audio-container">
+        <audio class="audio" controls>
+          <source src="Data Security vs. Data Privacy vs. Data Protection.mp3" type="audio/mp3">
+          <source src="path/to/audio-file3.ogg" type="audio/ogg">
+          Your browser does not support the audio element.
+        </audio>
+        <p class="audio-description">Audio 3: SSL, TLS, HTTP, HTTPS Explained</p>
+      </div>
+  
+      <!-- Audio file 4 -->
+      <div class="audio-container">
+        <audio class="audio" controls>
+          <source src="What is cyber security.mp3" type="audio/mp3">
+          <source src="path/to/audio-file2.ogg" type="audio/ogg">
+          Your browser does not support the audio element.
+        </audio>
+        <p class="audio-description">Audio 4: What is Cyber Security</p>
+      </div>
+  
+    </div>
+  </div>
+  
+  <style>
+    /* Styling for audio cards and layout */
+    .card {
+      background: rgba(17, 119, 236, 0.8);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 6px 15px rgba(247, 12, 12, 0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+  
+    .audio-container {
+      margin: 20px 0;
+      padding: 15px;
+      background: rgba(27, 44, 71, 0.7);
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+      transition: transform 0.2s ease;
+    }
+  
+    .audio-container:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 18px rgba(0, 255, 128, 0.5);
+    }
+  
+    .audio {
+      width: 100%;
+      max-width: 500px;
+      margin: 10px auto;
+      border-radius: 5px;
+      background: rgba(0, 255, 128, 0.1);
+    }
+  
+    .audio-description {
+      color: #d6d6d6;
+      font-size: 1.1rem;
+      margin-top: 10px;
+      transition: color 0.3s ease;
+    }
+  
+    .audio-container:hover .audio-description {
+      color: #00ff80;
+    }
+  
+    .audio-container p {
+      font-size: 1.1rem;
+      margin-top: 10px;
+      color: rgba(255, 255, 255, 0.8);
+      transition: color 0.3s ease;
+    }
+  
+    .audio-container:hover p {
+      color: #00ff80;
+    }
+  
+    /* Additional styles for hover on audio controls */
+    .audio:focus {
+      outline: none;
+      box-shadow: 0 0 10px rgba(0, 255, 128, 0.6);
+    }
+  
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .card {
+        padding: 15px;
+      }
+  
+      .audio {
+        width: 100%;
+        max-width: 90%;
+      }
+  
+      .audio-container {
+        padding: 10px;
+      }
+    }
+  </style>
+  
+  <script>
+    // Optional: Add custom play/pause state (you can use this to display feedback when audio is playing)
+    const audios = document.querySelectorAll('.audio');
+    
+    audios.forEach(audio => {
+      audio.addEventListener('play', () => {
+        audio.closest('.audio-container').classList.add('playing');
+      });
+  
+      audio.addEventListener('pause', () => {
+        audio.closest('.audio-container').classList.remove('playing');
+      });
+    });
+  </script>
+  

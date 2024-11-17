@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hard Cybersecurity Quiz</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide-react@latest/dist/lucide-react.min.js"></script>
+</head>
+<body class="bg-gradient-to-r from-blue-100 via-purple-200 to-pink-300">
+
+  <div class="w-full max-w-2xl mx-auto mt-10">
+    <div class="bg-white p-6 rounded-lg shadow-xl">
+      <div id="quiz-container">
+        <div id="quiz-header" class="flex items-center gap-2 text-blue-600">
+          <span class="lucide-shield text-xl"></span>
+          <span class="font-medium">Cybersecurity Question</span>
+        </div>
+        <h2 id="quiz-title" class="text-3xl font-semibold mt-4 text-center text-indigo-600">Hard Cybersecurity Quiz</h2>
+
+        <div id="question-section" class="space-y-6 mt-6">
+          <!-- Question and Options will be dynamically inserted here -->
+        </div>
+
+        <div id="quiz-report-card" class="hidden space-y-6">
+          <!-- Results will be displayed here -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "What type of attack leverages the use of malformed network packets to exploit vulnerabilities in network services?",
+        options: [
+          "Buffer Overflow",
+          "Denial-of-Service",
+          "Ping of Death",
+          "Man-in-the-Middle"
+        ],
+        correctAnswer: 2
+      },
+      {
+        question: "What cryptographic algorithm is considered the foundation for modern public key cryptography?",
+        options: [
+          "RSA",
+          "AES",
+          "Blowfish",
+          "ECC (Elliptic Curve Cryptography)"
+        ],
+        correctAnswer: 0
+      },
+      {
+        question: "Which attack technique involves gaining unauthorized access to a system by manipulating the behavior of its operating system or application software?",
+        options: [
+          "Privilege Escalation",
+          "SQL Injection",
+          "Cross-Site Scripting (XSS)",
+          "Zero-Day Attack"
+        ],
+        correctAnswer: 0
+      },
+      {
+        question: "What is the main focus of a Cross-Site Request Forgery (CSRF) attack?",
+        options: [
+          "Hijacking a user's session",
+          "Bypassing user authentication",
+          "Tricking users into submitting malicious requests",
+          "Exploiting untrusted third-party applications"
+        ],
+        correctAnswer: 2
+      },
+      {
+        question: "In the context of penetration testing, what is 'lateral movement'?",
+        options: [
+          "Moving between different networks within an organization",
+          "Exploiting vulnerabilities in a single system",
+          "Accessing sensitive data stored on backup systems",
+          "Gaining access to higher-level privileges"
+        ],
+        correctAnswer: 0
+      },
+      {
+        question: "Which of the following is a risk associated with the use of weak encryption algorithms in SSL/TLS?",
+        options: [
+          "Man-in-the-Middle Attacks",
+          "Cross-Site Scripting (XSS)",
+          "SQL Injection",
+          "Session Hijacking"
+        ],
+        correctAnswer: 0
+      },
+      {
+        question: "What is the primary objective of a 'Pass-the-Hash' attack?",
+        options: [
+          "To bypass the encryption of password files",
+          "To crack password hashes using brute force",
+          "To use stolen password hashes to authenticate without knowing the password",
+          "To retrieve the private key of an encrypted message"
+        ],
+        correctAnswer: 2
+      },
+      {
+        question: "What is the main vulnerability targeted by a 'Race Condition' attack?",
+        options: [
+          "Server overload",
+          "File handling errors",
+          "Exploiting the timing of operations",
+          "Improper access control"
+        ],
+        correctAnswer: 2
+      },
+      {
+        question: "Which of these techniques is primarily used in data exfiltration attacks?",
+        options: [
+          "DNS Tunneling",
+          "Brute Force Attack",
+          "DoS Attack",
+          "Social Engineering"
+        ],
+        correctAnswer: 0
+      },
+      {
+        question: "What does the term 'Cryptojacking' refer to?",
+        options: [
+          "Using malware to hijack a victim's cryptocurrency wallet",
+          "Using a victim's computer to mine cryptocurrency without their consent",
+          "Encrypting a victim's files and demanding payment for the decryption key",
+          "Stealing a victim's private key for cryptocurrency transactions"
+        ],
+        correctAnswer: 1
+      }
+    ];
+
+    let currentQuestionIndex = 0;
+    let answers = [];
+    let quizComplete = false;
+
+    const renderQuestion = () => {
+      const question = questions[currentQuestionIndex];
+      const questionSection = document.getElementById("question-section");
+      questionSection.innerHTML = `
+        <h3 class="text-xl font-semibold text-blue-700">Question ${currentQuestionIndex + 1} of ${questions.length}</h3>
+        <p class="text-lg font-semibold text-indigo-900">${question.question}</p>
+        <div class="space-y-3 mt-4">
+          ${question.options.map((option, index) => `
+            <button onclick="handleAnswer(${index})" class="w-full p-4 bg-gradient-to-r from-green-300 via-blue-300 to-purple-400 hover:bg-gradient-to-r hover:from-blue-400 hover:to-green-500 rounded-md text-left text-white transition-all duration-300 ease-in-out">
+              ${option}
+            </button>
+          `).join('')}
+        </div>
+      `;
+    };
+
+    const handleAnswer = (selectedIndex) => {
+      const question = questions[currentQuestionIndex];
+      const isCorrect = selectedIndex === question.correctAnswer;
+
+      answers.push({
+        question: question.question,
+        selectedAnswer: selectedIndex,
+        correctAnswer: question.correctAnswer,
+        isCorrect: isCorrect
+      });
+
+      if (currentQuestionIndex < questions.length - 1) {
+        currentQuestionIndex++;
+        renderQuestion();
+      } else {
+        quizComplete = true;
+        renderReportCard();
+      }
+    };
+
+    const renderReportCard = () => {
+      const stats = calculateScore();
+      const reportCard = document.getElementById("quiz-report-card");
+      const questionSection = document.getElementById("question-section");
+      questionSection.classList.add("hidden");
+      reportCard.classList.remove("hidden");
+
+      reportCard.innerHTML = `
+        <div class="flex items-center justify-center gap-3 text-yellow-500">
+          <span class="lucide-trophy text-3xl"></span>
+          <h2 class="text-2xl font-bold text-indigo-600">Quiz Report Card</h2>
+        </div>
+        <div class="text-center mt-4">
+          <p class="text-3xl font-bold text-blue-600">${stats.percentage}%</p>
+          <p class="text-gray-600">${stats.totalScore} correct out of ${stats.totalQuestions} questions</p>
+        </div>
+        <div class="space-y-3 mt-4">
+          <h3 class="font-semibold text-lg">Question Review:</h3>
+          ${answers.map((answer, index) => `
+            <div class="p-3 bg-gray-50 rounded-lg space-y-2">
+              <div class="flex items-center gap-2">
+                ${answer.isCorrect ? 
+                  '<span class="lucide-check-circle text-green-500"></span>' : 
+                  '<span class="lucide-x-circle text-red-500"></span>'}
+                <span class="font-medium">Question ${index + 1}</span>
+              </div>
+              <p class="text-sm text-gray-600">${answer.question}</p>
+              <p class="text-sm">
+                ${answer.isCorrect ? 
+                  '<span class="text-green-600">Correct!</span>' :
+                  `<span class="text-red-600">Incorrect - The right answer was: ${questions[index].options[answer.correctAnswer]}</span>`}
+              </p>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    };
+
+    const calculateScore = () => {
+      const correct = answers.filter(a => a.isCorrect).length;
+      return {
+        totalScore: correct,
+        totalQuestions: questions.length,
+        percentage: Math.round((correct / questions.length) * 100)
+      };
+    };
+
+    renderQuestion();  // Initial call to render the first question
+  </script>
+
+</body>
+</html>
